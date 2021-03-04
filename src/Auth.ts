@@ -39,7 +39,7 @@ export class Auth {
 	) => {
 		const baseUrl = options?.baseUrl || DEFAULT_BASE_URL;
 		const auth = await Auth.getAuthToken(credentials, baseUrl);
-		return new Auth(auth.token, baseUrl);
+		return new Auth(auth, baseUrl);
 	};
 
 	private static getAuthToken = async (
@@ -50,10 +50,12 @@ export class Auth {
 			`${baseUrl}/api/token`,
 			credentials
 		);
-		return response.data;
+		return Auth.tokenToBase64(response.data.token);
 	};
 
-	n;
+	private static tokenToBase64 = (token: string) => {
+		return btoa(`${token}:junk`);
+	};
 
 	public get = async <Response>(path: string): Promise<Response> => {
 		const response = await this.axios

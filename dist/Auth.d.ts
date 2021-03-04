@@ -13,7 +13,7 @@ export declare class Auth {
     constructor(token: string, baseUrl?: string | undefined);
     static login: (credentials: SecurePathLoginOptions, options?: SecurePathOptions | undefined) => Promise<Auth>;
     private static getAuthToken;
-    n: any;
+    private static tokenToBase64;
     get: <Response_1>(path: string) => Promise<Response_1>;
     put: <Response_1>(path: string, body: unknown) => Promise<Response_1>;
     patch: <Response_1>(path: string, body: unknown) => Promise<Response_1>;

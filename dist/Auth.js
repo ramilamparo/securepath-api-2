@@ -75,9 +75,12 @@ exports.Auth = Auth;
 Auth.login = (credentials, options) => __awaiter(void 0, void 0, void 0, function* () {
     const baseUrl = (options === null || options === void 0 ? void 0 : options.baseUrl) || exports.DEFAULT_BASE_URL;
     const auth = yield Auth.getAuthToken(credentials, baseUrl);
-    return new Auth(auth.token, baseUrl);
+    return new Auth(auth, baseUrl);
 });
 Auth.getAuthToken = (credentials, baseUrl) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield axios_1.default.post(`${baseUrl}/api/token`, credentials);
-    return response.data;
+    return Auth.tokenToBase64(response.data.token);
 });
+Auth.tokenToBase64 = (token) => {
+    return btoa(`${token}:junk`);
+};
