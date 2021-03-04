@@ -1,4 +1,5 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
+import { SecurePathApiError } from "./SecurePathApiError";
 
 export interface SecurePathLoginOptions {
 	email: string;
@@ -13,6 +14,11 @@ export const DEFAULT_BASE_URL = "https://sira.securepath.ae/";
 
 interface ApiTokenResponse {
 	token: string;
+}
+
+interface ApiErrorResponse {
+	error_code: string;
+	error_message: string;
 }
 
 export class Auth {
@@ -47,8 +53,12 @@ export class Auth {
 		return response.data;
 	};
 
+	n;
+
 	public get = async <Response>(path: string): Promise<Response> => {
-		const response = await this.axios.get<Response>(path);
+		const response = await this.axios
+			.get<Response>(path)
+			.catch(this.handleError);
 		return response.data;
 	};
 
@@ -56,7 +66,9 @@ export class Auth {
 		path: string,
 		body: unknown
 	): Promise<Response> => {
-		const response = await this.axios.put<Response>(path, body);
+		const response = await this.axios
+			.put<Response>(path, body)
+			.catch(this.handleError);
 		return response.data;
 	};
 
@@ -64,12 +76,16 @@ export class Auth {
 		path: string,
 		body: unknown
 	): Promise<Response> => {
-		const response = await this.axios.patch<Response>(path, body);
+		const response = await this.axios
+			.patch<Response>(path, body)
+			.catch(this.handleError);
 		return response.data;
 	};
 
 	public head = async <Response>(path: string): Promise<Response> => {
-		const response = await this.axios.head<Response>(path);
+		const response = await this.axios
+			.head<Response>(path)
+			.catch(this.handleError);
 		return response.data;
 	};
 
@@ -77,12 +93,26 @@ export class Auth {
 		path: string,
 		body: unknown
 	): Promise<Response> => {
-		const response = await this.axios.post<Response>(path, body);
+		const response = await this.axios
+			.post<Response>(path, body)
+			.catch(this.handleError);
 		return response.data;
 	};
 
 	public delete = async <Response>(path: string): Promise<Response> => {
-		const response = await this.axios.delete<Response>(path);
+		const response = await this.axios
+			.delete<Response>(path)
+			.catch(this.handleError);
 		return response.data;
+	};
+
+	private handleError = (error: AxiosError<ApiErrorResponse>) => {
+		if (error?.response?.data?.error_code) {
+			throw new SecurePathApiError(
+				error.response.data.error_message,
+				error.response.data.error_code
+			);
+		}
+		throw error;
 	};
 }

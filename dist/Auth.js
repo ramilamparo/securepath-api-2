@@ -14,35 +14,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Auth = exports.DEFAULT_BASE_URL = void 0;
 const axios_1 = __importDefault(require("axios"));
+const SecurePathApiError_1 = require("./SecurePathApiError");
 exports.DEFAULT_BASE_URL = "https://sira.securepath.ae/";
 class Auth {
     constructor(token, baseUrl) {
         this.token = token;
         this.baseUrl = baseUrl;
         this.get = (path) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.axios.get(path);
+            const response = yield this.axios
+                .get(path)
+                .catch(this.handleError);
             return response.data;
         });
         this.put = (path, body) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.axios.put(path, body);
+            const response = yield this.axios
+                .put(path, body)
+                .catch(this.handleError);
             return response.data;
         });
         this.patch = (path, body) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.axios.patch(path, body);
+            const response = yield this.axios
+                .patch(path, body)
+                .catch(this.handleError);
             return response.data;
         });
         this.head = (path) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.axios.head(path);
+            const response = yield this.axios
+                .head(path)
+                .catch(this.handleError);
             return response.data;
         });
         this.post = (path, body) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.axios.post(path, body);
+            const response = yield this.axios
+                .post(path, body)
+                .catch(this.handleError);
             return response.data;
         });
         this.delete = (path) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.axios.delete(path);
+            const response = yield this.axios
+                .delete(path)
+                .catch(this.handleError);
             return response.data;
         });
+        this.handleError = (error) => {
+            var _a, _b;
+            if ((_b = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.error_code) {
+                throw new SecurePathApiError_1.SecurePathApiError(error.response.data.error_message, error.response.data.error_code);
+            }
+            throw error;
+        };
         this.axios = axios_1.default.create({
             headers: {
                 Authorization: `Basic ${this.token}`

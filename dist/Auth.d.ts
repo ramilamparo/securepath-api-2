@@ -13,10 +13,12 @@ export declare class Auth {
     constructor(token: string, baseUrl?: string | undefined);
     static login: (credentials: SecurePathLoginOptions, options?: SecurePathOptions | undefined) => Promise<Auth>;
     private static getAuthToken;
+    n: any;
     get: <Response_1>(path: string) => Promise<Response_1>;
     put: <Response_1>(path: string, body: unknown) => Promise<Response_1>;
     patch: <Response_1>(path: string, body: unknown) => Promise<Response_1>;
     head: <Response_1>(path: string) => Promise<Response_1>;
     post: <Response_1>(path: string, body: unknown) => Promise<Response_1>;
     delete: <Response_1>(path: string) => Promise<Response_1>;
+    private handleError;
 }
