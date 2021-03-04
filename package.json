@@ -23,7 +23,9 @@
 	},
 	"homepage": "https://github.com/ramilamparo/securepath-api-2#readme",
 	"dependencies": {
-		"axios": "^0.21.1"
+		"@types/btoa": "^1.2.3",
+		"axios": "^0.21.1",
+		"btoa": "^1.2.1"
 	},
 	"devDependencies": {
 		"eslint-config-airbnb-typescript": "^8.0.2",
