@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
+import btoa from "btoa";
 import { SecurePathApiError } from "./SecurePathApiError";
 
 export interface SecurePathLoginOptions {

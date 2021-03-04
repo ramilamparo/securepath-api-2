@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Auth = exports.DEFAULT_BASE_URL = void 0;
 const axios_1 = __importDefault(require("axios"));
+const btoa_1 = __importDefault(require("btoa"));
 const SecurePathApiError_1 = require("./SecurePathApiError");
 exports.DEFAULT_BASE_URL = "https://sira.securepath.ae/";
 class Auth {
@@ -82,5 +83,5 @@ Auth.getAuthToken = (credentials, baseUrl) => __awaiter(void 0, void 0, void 0, 
     return Auth.tokenToBase64(response.data.token);
 });
 Auth.tokenToBase64 = (token) => {
-    return btoa(`${token}:junk`);
+    return btoa_1.default(`${token}:junk`);
 };
